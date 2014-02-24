@@ -1,0 +1,141 @@
+<!-- In case mvn fails with OutOfMemory error use: MAVEN_OPTS="-Xmx512m" -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Testing cascading project</name>
+    <groupId>scalding.io</groupId>
+    <artifactId>cascading-elastic</artifactId>
+    <packaging>jar</packaging>
+    <version>0.1</version>
+
+    <repositories>
+        <repository>
+            <id>conjars.org</id>
+            <url>http://conjars.org/repo</url>
+        </repository>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <targetJdk>1.6</targetJdk>
+        <slf4j.log4j12.version>1.6.2</slf4j.log4j12.version>
+        <junit.version>4.8.2</junit.version>
+        <maven-jar-plugin-version>2.3.1</maven-jar-plugin-version>
+        <cascading.version>2.5.1</cascading.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch-hadoop</artifactId>
+            <version>1.3.0.M2</version>
+        </dependency>
+            <dependency>
+                <groupId>cascading</groupId>
+                <artifactId>cascading-core</artifactId>
+                <version>${cascading.version}</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>cascading</groupId>
+                <artifactId>cascading-local</artifactId>
+                <version>${cascading.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cascading</groupId>
+                <artifactId>cascading-hadoop</artifactId>
+                <version>${cascading.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.log4j12.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cascading</groupId>
+                <artifactId>cascading-xml</artifactId>
+                <version>${cascading.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cascading</groupId>
+                <artifactId>cascading-platform</artifactId>
+                <version>${cascading.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.log4j12.version}</version>
+            </dependency>
+
+
+        <!-- Hadoop MRv1 -->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.hadoop</groupId>-->
+            <!--<artifactId>hadoop-core</artifactId>-->
+            <!--<version>2.0.0-mr1-cdh4.5.0</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-core</artifactId>
+            <version>0.20.2</version>
+        </dependency>
+    </dependencies>
+
+
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>${targetJdk}</source>
+                    <target>${targetJdk}</target>
+                    <optimize>true</optimize>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin-version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>ESCascadingLocalExample</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
