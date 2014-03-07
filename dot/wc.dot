@@ -1,0 +1,15 @@
+digraph G {
+  1 [label = "Every('wc')[Count[decl:[{1}:'count' | Long]]]"];
+  2 [label = "EsLocalTap['EsLocalScheme[[UNKNOWN]->['token', 'count']]']['wc/output']"];
+  3 [label = "GroupBy('wc')[by:['token']]"];
+  4 [label = "Each('token')[RegexSplitGenerator[decl:[{1}:'token']][args:1]]"];
+  5 [label = "EsLocalTap['EsLocalScheme[['docid', 'text']]']['wc/input']"];
+  6 [label = "[head]\n2.5.1\nlocal:2.5.1:Concurrent, Inc."];
+  7 [label = "[tail]"];
+  1 -> 2 [label = "[{2}:'token', 'count']\n[{1}:'token']"];
+  5 -> 4 [label = "[{2}:'docid', 'text']\n[{2}:'docid', 'text']"];
+  3 -> 1 [label = "wc[{1}:'token']\n[{1}:'token']"];
+  6 -> 5 [label = ""];
+  2 -> 7 [label = "[{2}:'token', 'count']\n[{2}:'token', 'count']"];
+  4 -> 3 [label = "[{1}:'token']\n[{1}:'token']"];
+}
